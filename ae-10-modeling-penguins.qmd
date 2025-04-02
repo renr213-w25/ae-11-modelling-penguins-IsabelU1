@@ -2,6 +2,9 @@
 title: "AE 10: Modelling penguins"
 categories: 
   - Application exercise
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 In this application exercise we will be studying penguins.
@@ -26,22 +29,25 @@ Please read the following context and take a `glimpse` at the data set before we
 ```{r}
 #| label: glimpse-penguins
 
-# add code here
+glimpse(penguins)
 ```
 
 Our goal is to understand better how various body measurements and attributes of penguins relate to their body mass.
 First, we are going to investigate the relationship between a penguins' flipper lengths and their body masses.
 
 -   **Question:** Based on our research focus, which variable is the response variable?
+    -   *Body mass is the responding variable*.
 
-*Add response here*
-
+```{=html}
+<!-- -->
+```
 -   **Demo:** Visualize the relationship between flipper length and body mass of penguins.
 
 ```{r}
 #| label: plot-bm-fl
 
-# add code here 
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()
 ```
 
 # Correlation
@@ -59,8 +65,8 @@ First, we are going to investigate the relationship between a penguins' flipper 
 
 ```{r}
 #| label: correlation
-
-# add code here
+penguins |>
+  summarize(r = cor(flipper_length_mm, body_mass_g, use = "complete.obs"))
 ```
 
 # Defining, fitting, and summarizing a model
@@ -68,7 +74,7 @@ First, we are going to investigate the relationship between a penguins' flipper 
 -   **Demo:** Write the population model below that explains the relationship between body mass and flipper length.
 
 $$
-add~math~text~here
+Body~mass = \beta_0 + \beta_1 \times flipper~length + \epsilon
 $$
 
 -   **Demo:** Fit the linear regression model and display the results. Write the estimated model output below.
