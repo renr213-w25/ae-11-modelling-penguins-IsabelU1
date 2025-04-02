@@ -6,6 +6,9 @@ categories:
   - Answers
 fig-width: 7
 fig-asp: 0.618
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 In this application exercise we will be studying penguins.
