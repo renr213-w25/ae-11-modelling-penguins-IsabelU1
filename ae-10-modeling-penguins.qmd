@@ -38,9 +38,8 @@ First, we are going to investigate the relationship between a penguins' flipper 
 -   **Question:** Based on our research focus, which variable is the response variable?
     -   *Body mass is the responding variable*.
 
-```{=html}
 <!-- -->
-```
+
 -   **Demo:** Visualize the relationship between flipper length and body mass of penguins.
 
 ```{r}
@@ -74,7 +73,7 @@ penguins |>
 -   **Demo:** Write the population model below that explains the relationship between body mass and flipper length.
 
 $$
-Body~mass = \beta_0 + \beta_1 \times flipper~length + \epsilon
+Body~mass = \beta_0 + \beta_1 \times flipper~length 
 $$
 
 -   **Demo:** Fit the linear regression model and display the results. Write the estimated model output below.
@@ -82,25 +81,30 @@ $$
 ```{r}
 #| label: fit-bm-fl
 
-# add code here
+bm_fl_fit <- linear_reg() |>
+  fit(body_mass_g ~ flipper_length_mm, data = penguins)
+
+tidy(bm_fl_fit)
 ```
 
 $$
-add~math~text~here
+Body~mass = -5780.83136+ 49.68557 \times flipper~length 
 $$
 
 -   **Your turn:** Interpret the slope and the intercept in the context of the data.
 
-    -   Intercept: *Add your response here*
+    -   *Intercept: Penguins with 0 flipper length are expected, on average, to weigh 5,781 grams.*
 
-    -   Slopes: *Add your response here*
+    -   *Slopes: For each additional millimeter of a penguin;s flipper length, the weight of their penguin is expected to be higher, on average, by 49.7 grams.*
 
 -   **Your turn:** Recreate the visualization from above, this time adding a regression line to the visualization `geom_smooth(method = "lm")`.
 
 ```{r}
 #| label: plot-bm-fl-line
 
-# add code here
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()+
+  geom_smooth(method="lm")
 ```
 
 -   What is the estimated body mass for a penguin with a flipper length of 210?
@@ -108,7 +112,8 @@ $$
 ```{r}
 #| label: predict-210
 
-# add code here
+bm_fl_fit |>
+  predict(new_data = tibble(flipper_length_mm = 210))
 ```
 
 -   What is the estimated body mass for a penguin with a flipper length of 100?
@@ -116,27 +121,31 @@ $$
 ```{r}
 #| label: predict-100
 
-# add code here
+bm_fl_fit |>
+  predict(new_data = tibble(flipper_length_mm = 100))
 ```
 
 # Another model
 
 -   **Demo:** A different researcher wants to look at body weight of penguins based on the island they were recorded on. How are the variables involved in this analysis different?
 
-*Add response here*
+The manipulated variable is a categorical variable instead of numerical.
 
 -   **Demo:** Make an appropriate visualization to investigate this relationship below. Additionally, calculate the mean body mass by island.
 
 ```{r}
 #| label: plot-bm-island
 
-# add code here
+ggplot(penguins, aes(x = island, y = body_mass_g)) +
+  geom_boxplot()
 ```
 
 ```{r}
 #| label: mean-bm-island
 
-# add code here
+penguins |>
+  group_by(island) |>
+  summarize(mean_bm = mean(body_mass_g, na.rm = TRUE))
 ```
 
 -   **Demo:** Change the geom of your previous plot to `geom_point()`. Use this plot to think about how R models these data.
@@ -144,7 +153,8 @@ $$
 ```{r}
 #| label: plot-bm-island-points
 
-# add code here
+ggplot(penguins, aes(x = island, y = body_mass_g)) +
+  geom_point()
 ```
 
 -   **Your turn:** Fit the linear regression model and display the results. Write the estimated model output below.
@@ -152,16 +162,21 @@ $$
 ```{r}
 #| label: fit-bm-island
 
-# add code here
-```
+bm_island_fit <- linear_reg() |>
+  fit(body_mass_g ~ island, data = penguins)
 
-Add math text here
+tidy(bm_island_fit)
+```
 
 -   **Demo:** Interpret each coefficient in context of the problem.
 
-    -   Intercept: *Add your response here*
+    -   *Intercept: Penguins from Biscoe island are expected to weigh, on average, 4,716 grams.*
 
-    -   Slopes: *Add your response here*
+    -   *Slopes:*
+
+        -   *Penguins from Dream island are expected to weigh, on average, 1,003 grams less than those from Biscoe island.*
+
+        -   *Penguins from Torgersen island are expected to weigh, on average, 1,010 grams less than those from Biscoe island.*
 
 -   **Demo:** What is the estimated body weight of a penguin on Biscoe island?
     What are the estimated body weights of penguins on Dream and Torgersen islands?
@@ -169,5 +184,6 @@ Add math text here
 ```{r}
 #| label: predict-bm-island
 
-# add code here
+bm_island_fit |>
+  predict(new_data = tibble(island = c("Biscoe", "Dream", "Torgersen")))
 ```
